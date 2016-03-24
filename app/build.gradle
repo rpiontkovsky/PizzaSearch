@@ -1,0 +1,90 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.romao.pizzasearch"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/beans.xml'
+        exclude 'META-INF/ASL2.0'
+        exclude 'LICENSE'
+        exclude 'LICENSE.txt'
+        exclude 'NOTICE'
+        exclude 'asm-license.txt'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+configurations.all {
+    // check dependency tree with gradlew :vimcar-ui:dependencies
+
+    // avoid wildcard '+' dependencies used at 3rd libraries forcing them to exact version
+    resolutionStrategy.force "com.android.support:support-v4:$supportVersion"
+    resolutionStrategy.force "com.android.support:support-v13:$supportVersion"
+    resolutionStrategy.force "com.android.support:appcompat-v7:$supportVersion"
+    resolutionStrategy.force "com.android.support:support-annotations:$supportVersion"
+    resolutionStrategy.force "com.google.android.gms:play-services-maps:$playServicesVersion"
+    resolutionStrategy.force "com.google.android.gms:play-services-analytics:$playServicesVersion"
+    // avoid conflict with retrofit jackson converter by forcing our own version
+    resolutionStrategy.force "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    // com.google.android:android:4.0.1.2 is useful only
+    // to reference android code from plain java projects
+    // no need to bundle it with apk, since it will be replaced by actual SDK on phones
+    exclude group: 'com.google.android'
+    // Gson is bundled with retrofit, but since we are using Jackson we don't need it
+    exclude group: 'com.google.code.gson'
+    // json-20080701.jar is packed into android SDK,
+    // no need to bundle it with our apk
+    exclude group: 'org.json'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // google services and support libraries
+    compile "com.android.support:support-v13:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:support-annotations:$supportVersion"
+    compile "com.google.android.gms:play-services-maps:$playServicesVersion"
+    compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
+
+    // rx
+    compile "io.reactivex:rxjava:$rxJavaVersion"
+    compile "io.reactivex:rxandroid:$rxAndroidVersion"
+
+    // retrofit
+    compile "com.squareup.retrofit:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit:converter-jackson:$retrofitVersion"
+
+    // couchbase
+    compile "com.couchbase.lite:couchbase-lite-android:$couchbaseVersion"
+}

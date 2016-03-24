@@ -1,0 +1,45 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    buildToolsVersion = '23.0.2'
+    compileSdkVersion = 23
+    minSdkVersion = 15
+    targetSdkVersion = 21
+
+    // set java7 compatible bytecode, because android doesnt support java8 bytecode
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+    targetCompatibilityVersion = JavaVersion.VERSION_1_7
+
+    // explicitly set same version for dependencies at project. because they will be upgraded implicitly anyway.
+    timberVersion = '3.1.0'
+    rxJavaVersion = '1.0.14'
+    rxAndroidVersion = '1.0.1'
+    retrofitVersion = '1.9.0'
+    okhttpVersion = '2.4.0'
+    jacksonVersion = '2.4.6'
+    playServicesVersion = '8.4.0'
+    supportVersion = '23.2.1'
+    couchbaseVersion='1.2.0'
+}
